@@ -4,22 +4,7 @@ import { defaultTheme } from './styles/themes/default'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './routes'
 
-// const router = createBrowserRouter([
-//   {
-//     path: '/',
-//     element: <RootLayout />,
-//     children: [
-//       {
-//         path: '*',
-//         element: <Blog />,
-//       },
-//       {
-//         path: '/{id}',
-//         element: <div>dasdasd</div>,
-//       },
-//     ],
-//   },
-// ])
+import './lib/dayjs'
 
 export function App() {
   return (

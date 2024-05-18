@@ -1,3 +1,4 @@
+import { User } from '../../pages/Blog'
 import { ProfileContainer, ProfileInfo, ProfileInfoFooter } from './styles'
 
 import {
@@ -7,40 +8,37 @@ import {
   FaExternalLinkAlt,
 } from 'react-icons/fa'
 
-export function Profile() {
+interface ProfileProps {
+  user: User | null
+}
+
+export function Profile({ user }: ProfileProps) {
+  if (!user) return <></>
+
   return (
     <ProfileContainer>
-      <img src="https://github.com/diegoveigass.png" alt="" />
+      <img src={user.avatar_url} alt="" />
       <ProfileInfo>
         <header>
           <strong>Diego Veiga</strong>
-          <a
-            href="https://github.com/diegoveigass"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={user.html_url} target="_blank" rel="noreferrer">
             GITHUB
             <FaExternalLinkAlt size={12} />
           </a>
         </header>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis,
-          repellat totam voluptate deserunt modi magnam nostrum eos eaque magni
-          minus maiores. Voluptatibus quae at enim labore amet deserunt,
-          pariatur quidem!
-        </p>
+        <p>{user.bio}</p>
         <ProfileInfoFooter>
           <div>
             <FaGithub size={16} />
-            <span>diegoveigass</span>
+            <span>{user.login}</span>
           </div>
           <div>
             <FaBuilding size={16} />
-            <span>XMobots</span>
+            <span>{user.company}</span>
           </div>
           <div>
             <FaUserFriends size={16} />
-            <span>32 seguidores</span>
+            <span>{user.followers} seguidores</span>
           </div>
         </ProfileInfoFooter>
       </ProfileInfo>
