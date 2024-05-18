@@ -13,44 +13,73 @@ import {
   MainText,
   RepositoryTextContainer,
 } from './styles'
+import { Link, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjs from 'dayjs'
+dayjs.extend(relativeTime)
+
+interface Issue {
+  body: string
+  title: string
+  comments: number
+  created_at: string
+  user: {
+    login: string
+  }
+  url: string
+}
 
 export function Repository() {
+  const { id } = useParams()
+  const [issue, setIssue] = useState<Issue | null>(null)
+
+  useEffect(() => {
+    if (!id) return
+    axios
+      .get(
+        `https://api.github.com/repos/rocketseat-education/reactjs-github-blog-challenge/issues/${id}`,
+      )
+      .then((response) => setIssue(response.data))
+  }, [id])
+
   return (
     <MainContainer>
       <Container>
         <HeaderContainer>
-          <a href="#">
+          <Link to="/">
             <FaChevronLeft />
             <span>Voltar</span>
-          </a>
-          <a href="#">
+          </Link>
+          <a href={issue?.url}>
             <FaLink />
             <span>Ver no Github</span>
           </a>
         </HeaderContainer>
-        <MainText>Javascript data types and data structures</MainText>
+        <MainText>{issue?.title}</MainText>
         <InfoFooter>
           <div>
             <FaGithub size={16} />
-            <span>diegoveigass</span>
+            <span>{issue?.user.login}</span>
           </div>
           <div>
             <FaCalendar size={16} />
-            <span>Há 1 dia</span>
+            <span>{dayjs(new Date()).to(issue?.created_at)}</span>
           </div>
           <div>
             <FaComment size={16} />
-            <span>5 comentários</span>
+            <span>{issue?.comments} comentários</span>
           </div>
         </InfoFooter>
       </Container>
       <RepositoryTextContainer>
-        <span>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-          quam rerum facilis iure repudiandae neque iste vero quaerat quas.
-          Eveniet repellendus vitae culpa magni! Fugiat aliquid nobis
-          repudiandae enim delectus?
-        </span>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: issue?.body ? issue?.body : 'Sem comentários',
+          }}
+        ></span>
       </RepositoryTextContainer>
     </MainContainer>
   )

@@ -16,10 +16,11 @@ export interface User {
 }
 
 export interface CardResponse {
-  id: string
+  id: number
   title: string
   created_at: string
   body: string | null
+  number: number
 }
 
 export function Blog() {
